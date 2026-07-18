@@ -1028,6 +1028,37 @@
       width: auto;
     }
 
+    .save-image-button {
+      min-width: 250px !important;
+    }
+
+    .save-image-button[aria-busy="true"] {
+      cursor: wait;
+      opacity: 0.82;
+    }
+
+    .save-image-button[aria-busy="true"] .btn-icon {
+      animation: savePulse 850ms ease-in-out infinite alternate;
+    }
+
+    @keyframes savePulse {
+      from {
+        transform: translateY(-2px);
+        opacity: 0.55;
+      }
+      to {
+        transform: translateY(2px);
+        opacity: 1;
+      }
+    }
+
+    .save-image-hint {
+      margin: 12px auto 0;
+      color: #91a0b5;
+      font-size: 0.76rem;
+      text-align: center;
+    }
+
     .event-disclaimer {
       max-width: 760px;
       margin: 24px auto 0;
@@ -1511,23 +1542,16 @@
             </div>
 
             <div class="result-actions">
-              <button class="btn btn-primary" id="copy-button" type="button">
-                <span class="btn-icon" aria-hidden="true">⧉</span>
-                คัดลอกผลลัพธ์
-              </button>
-              <button class="btn btn-secondary" id="download-button" type="button">
-                <span class="btn-icon" aria-hidden="true">↓</span>
-                ดาวน์โหลดสรุป
-              </button>
-              <button class="btn btn-secondary" id="print-button" type="button">
-                <span class="btn-icon" aria-hidden="true">▣</span>
-                พิมพ์ / บันทึก PDF
+              <button class="btn btn-primary save-image-button" id="save-image-button" type="button" disabled>
+                <span class="btn-icon" aria-hidden="true">⇩</span>
+                <span id="save-image-label">กำลังเตรียมรูป...</span>
               </button>
               <button class="btn btn-ghost" id="restart-button" type="button">
                 ทำแบบทดสอบใหม่
               </button>
             </div>
 
+            <p class="save-image-hint">บนมือถือ ให้เลือก “บันทึกรูปภาพ” จากเมนูแชร์เพื่อเก็บลงเครื่อง</p>
             <p class="event-disclaimer">
               ผลลัพธ์นี้เป็นภาพสะท้อนจากสถานการณ์จำลอง 9 ข้อ ควรใช้เป็นจุดเริ่มต้นของบทสนทนาและการทำความเข้าใจทีม
             </p>
@@ -1558,7 +1582,7 @@
     */
     const APP_CONFIG = {
       appName: "UPC 2026 PLAYER DNA",
-      version: "2.0.0",
+      version: "2.1.0",
       submissionEndpoint: "",
       storageKey: "upc2026-player-dna-session-v2"
     };
@@ -1578,6 +1602,13 @@
     };
 
     const roleOrder = ["Playmaker", "Striker", "Defender", "Captain"];
+
+    const imagePalettes = {
+      Playmaker: { start: "#FFD166", end: "#FF9F43" },
+      Striker: { start: "#FF6B7D", end: "#FF3D68" },
+      Defender: { start: "#63B3FF", end: "#4989FF" },
+      Captain: { start: "#BD82FF", end: "#8858FF" }
+    };
 
     const roleProfiles = {
       Playmaker: {
@@ -1646,7 +1677,9 @@
       currentIndex: 0,
       answers: {},
       profile: { displayName: "", department: "" },
-      result: null
+      result: null,
+      resultImageBlob: null,
+      resultImageFileName: ""
     };
 
     const els = {
@@ -1679,9 +1712,8 @@
       teamImpact: document.getElementById("team-impact"),
       growthTip: document.getElementById("growth-tip"),
       scoreList: document.getElementById("score-list"),
-      copyButton: document.getElementById("copy-button"),
-      downloadButton: document.getElementById("download-button"),
-      printButton: document.getElementById("print-button"),
+      saveImageButton: document.getElementById("save-image-button"),
+      saveImageLabel: document.getElementById("save-image-label"),
       restartButton: document.getElementById("restart-button")
     };
 
@@ -1699,9 +1731,7 @@
       els.startForm.addEventListener("submit", startQuiz);
       els.backButton.addEventListener("click", goBack);
       els.nextButton.addEventListener("click", goNext);
-      els.copyButton.addEventListener("click", copyResult);
-      els.downloadButton.addEventListener("click", downloadResult);
-      els.printButton.addEventListener("click", () => window.print());
+      els.saveImageButton.addEventListener("click", saveResultImage);
       els.restartButton.addEventListener("click", restartQuiz);
       document.addEventListener("keydown", handleKeyboard);
 
@@ -1970,81 +2000,581 @@
           row.querySelector(".score-fill").style.width = `${percent}%`;
         });
       });
+
+      prepareResultImage();
     }
 
-    function buildResultText() {
-      if (!state.result) {
-        return "";
+    function hexToRgba(hex, alpha) {
+      const normalized = hex.replace("#", "");
+      const value = Number.parseInt(normalized, 16);
+      const red = (value >> 16) & 255;
+      const green = (value >> 8) & 255;
+      const blue = value & 255;
+      return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+    }
+
+    function roundedRectPath(context, x, y, width, height, radius) {
+      const safeRadius = Math.min(radius, width / 2, height / 2);
+      context.beginPath();
+      context.moveTo(x + safeRadius, y);
+      context.arcTo(x + width, y, x + width, y + height, safeRadius);
+      context.arcTo(x + width, y + height, x, y + height, safeRadius);
+      context.arcTo(x, y + height, x, y, safeRadius);
+      context.arcTo(x, y, x + width, y, safeRadius);
+      context.closePath();
+    }
+
+    function fillRoundedRect(context, x, y, width, height, radius, fillStyle, strokeStyle = null) {
+      roundedRectPath(context, x, y, width, height, radius);
+      context.fillStyle = fillStyle;
+      context.fill();
+      if (strokeStyle) {
+        context.strokeStyle = strokeStyle;
+        context.lineWidth = 2;
+        context.stroke();
+      }
+    }
+
+    function splitLongToken(context, token, maxWidth) {
+      const pieces = [];
+      let current = "";
+
+      Array.from(token).forEach((character) => {
+        const candidate = current + character;
+        if (current && context.measureText(candidate).width > maxWidth) {
+          pieces.push(current);
+          current = character;
+        } else {
+          current = candidate;
+        }
+      });
+
+      if (current) {
+        pieces.push(current);
+      }
+      return pieces;
+    }
+
+    function wrapCanvasText(context, text, maxWidth) {
+      const source = String(text || "").trim();
+      if (!source) {
+        return [];
       }
 
+      let tokens;
+      if (typeof Intl !== "undefined" && Intl.Segmenter) {
+        const segmenter = new Intl.Segmenter("th", { granularity: "word" });
+        tokens = Array.from(segmenter.segment(source), ({ segment }) => segment);
+      } else {
+        tokens = source.split(/(\s+)/).filter(Boolean);
+      }
+
+      const lines = [];
+      let line = "";
+
+      tokens.forEach((token) => {
+        const parts = context.measureText(token).width > maxWidth
+          ? splitLongToken(context, token, maxWidth)
+          : [token];
+
+        parts.forEach((part) => {
+          const candidate = line + part;
+          if (line && context.measureText(candidate).width > maxWidth) {
+            lines.push(line.trim());
+            line = part.trimStart();
+          } else {
+            line = candidate;
+          }
+        });
+      });
+
+      if (line.trim()) {
+        lines.push(line.trim());
+      }
+      return lines;
+    }
+
+    function drawWrappedText(context, text, x, y, maxWidth, options = {}) {
+      const {
+        font = '400 26px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
+        color = "#FFFFFF",
+        lineHeight = 38,
+        align = "left",
+        maxLines = 99
+      } = options;
+
+      context.save();
+      context.font = font;
+      context.fillStyle = color;
+      context.textAlign = align;
+      context.textBaseline = "top";
+
+      let lines = wrapCanvasText(context, text, maxWidth);
+      if (lines.length > maxLines) {
+        lines = lines.slice(0, maxLines);
+        let finalLine = lines[maxLines - 1];
+        while (finalLine && context.measureText(`${finalLine}…`).width > maxWidth) {
+          finalLine = finalLine.slice(0, -1);
+        }
+        lines[maxLines - 1] = `${finalLine.trimEnd()}…`;
+      }
+
+      lines.forEach((line, index) => {
+        context.fillText(line, x, y + (index * lineHeight));
+      });
+      context.restore();
+      return y + (lines.length * lineHeight);
+    }
+
+    function drawSectionHeading(context, title, x, y, accentColor) {
+      context.save();
+      context.fillStyle = accentColor;
+      context.beginPath();
+      context.arc(x + 8, y + 17, 8, 0, Math.PI * 2);
+      context.fill();
+      context.font = '800 30px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
+      context.fillStyle = "#F8FBFF";
+      context.textAlign = "left";
+      context.textBaseline = "top";
+      context.fillText(title, x + 32, y);
+      context.restore();
+    }
+
+    function drawGlow(context, x, y, radius, color) {
+      const glow = context.createRadialGradient(x, y, 0, x, y, radius);
+      glow.addColorStop(0, hexToRgba(color, 0.28));
+      glow.addColorStop(1, hexToRgba(color, 0));
+      context.fillStyle = glow;
+      context.beginPath();
+      context.arc(x, y, radius, 0, Math.PI * 2);
+      context.fill();
+    }
+
+    function createResultImageCanvas() {
+      if (!state.result) {
+        throw new Error("Result is not available");
+      }
+
+      const width = 1080;
+      const height = 1920;
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const context = canvas.getContext("2d");
       const result = state.result;
       const profile = roleProfiles[result.finalRole];
-      const identity = [
-        state.profile.displayName,
+      const palette = imagePalettes[result.finalRole];
+      const displayLabel = [
+        state.profile.displayName || "ผู้เล่นลับ",
         state.profile.department
       ].filter(Boolean).join(" · ");
 
-      const scoreLines = roleOrder
-        .map((role) => `${role}: ${result.scores[role]} คะแนน`)
-        .join("\n");
+      context.imageSmoothingEnabled = true;
+      context.textBaseline = "top";
 
-      return [
-        "UPC 2026 · PLAYER DNA",
-        "=======================",
-        identity ? `ผู้ตอบ: ${identity}` : "ผู้ตอบ: ไม่ระบุตัวตน",
-        "",
-        `ผลลัพธ์: ${result.finalRole.toUpperCase()} — ${profile.thai}`,
-        profile.tagline,
-        "",
-        "จุดแข็ง:",
-        ...profile.strengths.map((item) => `- ${item}`),
-        "",
-        `พลังที่เติมให้ทีม: ${profile.impact}`,
-        "",
-        `ภารกิจอัปเลเวล: ${profile.growth}`,
-        "",
-        "คะแนน:",
-        scoreLines,
-        "",
-        "หมายเหตุ: ผลลัพธ์นี้ใช้เพื่อการเรียนรู้และการสร้างทีม ไม่ใช่เครื่องมือประเมินผลงาน"
-      ].join("\n");
-    }
+      const background = context.createLinearGradient(0, 0, width, height);
+      background.addColorStop(0, "#030A13");
+      background.addColorStop(0.48, "#07182B");
+      background.addColorStop(1, "#0A1730");
+      context.fillStyle = background;
+      context.fillRect(0, 0, width, height);
 
-    async function copyResult() {
-      const text = buildResultText();
+      drawGlow(context, 120, 240, 390, palette.start);
+      drawGlow(context, 1010, 420, 430, palette.end);
+      drawGlow(context, 920, 1800, 420, "#55E6C1");
 
-      try {
-        await navigator.clipboard.writeText(text);
-        showToast("คัดลอกผลลัพธ์แล้ว");
-      } catch (error) {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.append(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
-        showToast("คัดลอกผลลัพธ์แล้ว");
+      context.save();
+      context.strokeStyle = "rgba(255, 255, 255, 0.025)";
+      context.lineWidth = 1;
+      for (let x = 0; x <= width; x += 60) {
+        context.beginPath();
+        context.moveTo(x, 0);
+        context.lineTo(x, height);
+        context.stroke();
       }
+      for (let y = 0; y <= height; y += 60) {
+        context.beginPath();
+        context.moveTo(0, y);
+        context.lineTo(width, y);
+        context.stroke();
+      }
+      context.restore();
+
+      const brandGradient = context.createLinearGradient(64, 54, 140, 130);
+      brandGradient.addColorStop(0, "#55E6C1");
+      brandGradient.addColorStop(1, "#9BF5DD");
+      fillRoundedRect(context, 64, 54, 76, 76, 23, brandGradient);
+      context.save();
+      context.fillStyle = "#07111F";
+      context.beginPath();
+      context.moveTo(95, 76);
+      context.lineTo(95, 108);
+      context.lineTo(119, 92);
+      context.closePath();
+      context.fill();
+      context.restore();
+
+      context.save();
+      context.fillStyle = "#F7FAFF";
+      context.font = '800 28px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
+      context.fillText("UPC 2026 · PLAYER DNA", 160, 62);
+      context.fillStyle = "#8FA2BA";
+      context.font = '600 18px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
+      context.fillText("TEAM DISCOVERY EXPERIENCE", 160, 103);
+      context.restore();
+
+      fillRoundedRect(
+        context,
+        770,
+        68,
+        246,
+        48,
+        24,
+        "rgba(255, 255, 255, 0.055)",
+        "rgba(255, 255, 255, 0.11)"
+      );
+      context.save();
+      context.fillStyle = "#B8C5D7";
+      context.font = '700 18px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
+      context.textAlign = "center";
+      context.fillText("RESULT CARD · 2026", 893, 80);
+      context.restore();
+
+      const heroGradient = context.createLinearGradient(64, 160, 1016, 750);
+      heroGradient.addColorStop(0, hexToRgba(palette.start, 0.15));
+      heroGradient.addColorStop(1, "rgba(255, 255, 255, 0.035)");
+      fillRoundedRect(
+        context,
+        64,
+        160,
+        952,
+        590,
+        42,
+        heroGradient,
+        hexToRgba(palette.start, 0.36)
+      );
+
+      context.save();
+      context.fillStyle = palette.start;
+      context.font = '900 21px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
+      context.textAlign = "center";
+      context.letterSpacing = "3px";
+      context.fillText("YOUR PLAYER DNA REVEALED", 540, 202);
+      context.restore();
+
+      const emblemGradient = context.createLinearGradient(476, 248, 604, 376);
+      emblemGradient.addColorStop(0, palette.start);
+      emblemGradient.addColorStop(1, palette.end);
+      context.save();
+      context.shadowColor = hexToRgba(palette.start, 0.38);
+      context.shadowBlur = 45;
+      fillRoundedRect(context, 476, 248, 128, 128, 35, emblemGradient);
+      context.restore();
+      context.save();
+      context.font = '64px "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      context.fillText(profile.icon, 540, 312);
+      context.restore();
+
+      drawWrappedText(context, displayLabel, 540, 398, 810, {
+        font: '600 25px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
+        color: "#C7D3E4",
+        lineHeight: 34,
+        align: "center",
+        maxLines: 1
+      });
+
+      context.save();
+      const titleGradient = context.createLinearGradient(250, 0, 830, 0);
+      titleGradient.addColorStop(0, palette.start);
+      titleGradient.addColorStop(1, palette.end);
+      context.fillStyle = titleGradient;
+      context.font = '900 82px "Arial Narrow", "Segoe UI", sans-serif';
+      context.textAlign = "center";
+      context.textBaseline = "top";
+      context.fillText(result.finalRole.toUpperCase(), 540, 438);
+      context.restore();
+
+      drawWrappedText(context, profile.thai, 540, 532, 760, {
+        font: '800 34px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
+        color: "#FFFFFF",
+        lineHeight: 46,
+        align: "center",
+        maxLines: 1
+      });
+
+      drawWrappedText(context, profile.tagline, 540, 585, 810, {
+        font: '500 27px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
+        color: "#BBC8D9",
+        lineHeight: 40,
+        align: "center",
+        maxLines: 2
+      });
+
+      const secondaryText = `พลังรองของคุณ: ${result.secondaryRole.toUpperCase()}`;
+      context.save();
+      context.font = '700 21px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
+      const secondaryWidth = Math.min(context.measureText(secondaryText).width + 58, 620);
+      fillRoundedRect(
+        context,
+        540 - (secondaryWidth / 2),
+        680,
+        secondaryWidth,
+        46,
+        23,
+        "rgba(0, 0, 0, 0.20)",
+        "rgba(255, 255, 255, 0.12)"
+      );
+      context.fillStyle = "#D7E0ED";
+      context.textAlign = "center";
+      context.textBaseline = "top";
+      context.fillText(secondaryText, 540, 691);
+      context.restore();
+
+      fillRoundedRect(
+        context,
+        64,
+        780,
+        952,
+        310,
+        32,
+        "rgba(255, 255, 255, 0.045)",
+        "rgba(255, 255, 255, 0.10)"
+      );
+      drawSectionHeading(context, "จุดแข็งที่ทีมสัมผัสได้", 100, 816, palette.start);
+
+      let strengthY = 872;
+      profile.strengths.forEach((strength) => {
+        context.save();
+        context.fillStyle = palette.start;
+        context.beginPath();
+        context.arc(116, strengthY + 16, 12, 0, Math.PI * 2);
+        context.fill();
+        context.fillStyle = "#07111F";
+        context.font = '900 17px "Segoe UI", sans-serif';
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillText("✓", 116, strengthY + 16);
+        context.restore();
+        const nextY = drawWrappedText(context, strength, 146, strengthY, 820, {
+          font: '500 25px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
+          color: "#DCE6F2",
+          lineHeight: 35,
+          maxLines: 2
+        });
+        strengthY = nextY + 12;
+      });
+
+      fillRoundedRect(
+        context,
+        64,
+        1120,
+        952,
+        350,
+        32,
+        "rgba(255, 255, 255, 0.045)",
+        "rgba(255, 255, 255, 0.10)"
+      );
+      drawSectionHeading(context, "PLAYER DNA ของคุณ", 100, 1156, palette.start);
+      drawWrappedText(context, "คะแนนสะท้อนแนวโน้มจากคำตอบทั้งหมด และคุณอาจมีพลังมากกว่าหนึ่งรูปแบบ", 100, 1205, 850, {
+        font: '400 22px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
+        color: "#93A5BB",
+        lineHeight: 32,
+        maxLines: 1
+      });
+
+      let scoreY = 1247;
+      roleOrder.forEach((role) => {
+        const score = result.scores[role];
+        const percent = result.totalScore > 0 ? Math.round((score / result.totalScore) * 100) : 0;
+        const rolePalette = imagePalettes[role];
+
+        context.save();
+        context.fillStyle = "#D9E3EF";
+        context.font = '800 21px "Segoe UI", sans-serif';
+        context.textAlign = "left";
+        context.textBaseline = "top";
+        context.fillText(role.toUpperCase(), 100, scoreY);
+        context.fillStyle = "#AFC0D4";
+        context.textAlign = "right";
+        context.fillText(`${percent}%`, 980, scoreY);
+        context.restore();
+
+        fillRoundedRect(context, 100, scoreY + 34, 880, 13, 7, "rgba(255, 255, 255, 0.085)");
+        const fillWidth = Math.max(12, 880 * (percent / 100));
+        const barGradient = context.createLinearGradient(100, 0, 100 + fillWidth, 0);
+        barGradient.addColorStop(0, rolePalette.start);
+        barGradient.addColorStop(1, rolePalette.end);
+        fillRoundedRect(context, 100, scoreY + 34, fillWidth, 13, 7, barGradient);
+        scoreY += 52;
+      });
+
+      fillRoundedRect(
+        context,
+        64,
+        1490,
+        460,
+        310,
+        32,
+        "rgba(255, 255, 255, 0.045)",
+        "rgba(255, 255, 255, 0.10)"
+      );
+      drawSectionHeading(context, "พลังที่คุณเติมให้ทีม", 96, 1527, palette.start);
+      drawWrappedText(context, profile.impact, 96, 1580, 396, {
+        font: '500 23px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
+        color: "#C4D0DF",
+        lineHeight: 34,
+        maxLines: 6
+      });
+
+      fillRoundedRect(
+        context,
+        556,
+        1490,
+        460,
+        310,
+        32,
+        "rgba(255, 255, 255, 0.045)",
+        "rgba(255, 255, 255, 0.10)"
+      );
+      drawSectionHeading(context, "ภารกิจอัปเลเวล", 588, 1527, palette.end);
+      drawWrappedText(context, profile.growth, 588, 1580, 396, {
+        font: '500 23px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
+        color: "#C4D0DF",
+        lineHeight: 34,
+        maxLines: 6
+      });
+
+      context.save();
+      context.strokeStyle = "rgba(255, 255, 255, 0.09)";
+      context.beginPath();
+      context.moveTo(64, 1842);
+      context.lineTo(1016, 1842);
+      context.stroke();
+      context.fillStyle = "#8294AA";
+      context.font = '500 18px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
+      context.textAlign = "left";
+      context.fillText("ผลลัพธ์เพื่อการเรียนรู้และการทำความเข้าใจทีม", 64, 1866);
+      context.textAlign = "right";
+      context.fillText("UPC 2026", 1016, 1866);
+      context.restore();
+
+      return canvas;
     }
 
-    function downloadResult() {
-      const text = buildResultText();
-      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      const safeName = (state.profile.displayName || "anonymous")
-        .replace(/[^\p{L}\p{N}-]+/gu, "-")
-        .replace(/^-+|-+$/g, "");
+    function canvasToPngBlob(canvas) {
+      return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            resolve(blob);
+          } else {
+            reject(new Error("Unable to create PNG image"));
+          }
+        }, "image/png", 1);
+      });
+    }
 
-      link.href = url;
-      link.download = `UPC2026-PLAYER-DNA-${safeName || "result"}.txt`;
+    function makeResultFileName() {
+      const safeName = (state.profile.displayName || "anonymous")
+        .normalize("NFC")
+        .replace(/[^\p{L}\p{N}\p{M}-]+/gu, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 50);
+      return `UPC2026-PLAYER-DNA-${safeName || "result"}.png`;
+    }
+
+    function downloadImageBlob(blob, fileName) {
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = fileName;
+      link.rel = "noopener";
       document.body.append(link);
       link.click();
       link.remove();
-      URL.revokeObjectURL(url);
-      showToast("ดาวน์โหลดไฟล์สรุปแล้ว");
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
+    }
+
+    async function prepareResultImage() {
+      if (!state.result) {
+        return;
+      }
+
+      const resultToken = state.result.completedAt;
+      state.resultImageBlob = null;
+      state.resultImageFileName = makeResultFileName();
+      els.saveImageButton.disabled = true;
+      els.saveImageButton.setAttribute("aria-busy", "true");
+      els.saveImageLabel.textContent = "กำลังเตรียมรูป...";
+
+      try {
+        if (document.fonts && document.fonts.ready) {
+          await document.fonts.ready;
+        }
+
+        const canvas = createResultImageCanvas();
+        const blob = await canvasToPngBlob(canvas);
+
+        if (!state.result || state.result.completedAt !== resultToken) {
+          return;
+        }
+
+        state.resultImageBlob = blob;
+        els.saveImageButton.disabled = false;
+        els.saveImageButton.removeAttribute("aria-busy");
+        els.saveImageLabel.textContent = "บันทึกรูปลงมือถือ";
+      } catch (error) {
+        console.error("Unable to prepare result image:", error);
+        els.saveImageButton.disabled = false;
+        els.saveImageButton.removeAttribute("aria-busy");
+        els.saveImageLabel.textContent = "ลองสร้างรูปอีกครั้ง";
+        showToast("ยังสร้างรูปไม่ได้ กรุณาลองอีกครั้ง");
+      }
+    }
+
+    function saveResultImage() {
+      if (!state.result) {
+        return;
+      }
+
+      if (!state.resultImageBlob) {
+        prepareResultImage();
+        showToast("กำลังเตรียมรูป กรุณาแตะอีกครั้งเมื่อปุ่มพร้อม");
+        return;
+      }
+
+      const blob = state.resultImageBlob;
+      const fileName = state.resultImageFileName || makeResultFileName();
+
+      try {
+        const file = new File([blob], fileName, { type: "image/png" });
+        const shareData = {
+          files: [file],
+          title: "UPC 2026 · PLAYER DNA",
+          text: `PLAYER DNA ของฉันคือ ${state.result.finalRole.toUpperCase()}`
+        };
+
+        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+          navigator.share(shareData).then(() => {
+            showToast("ดำเนินการกับรูปเรียบร้อย");
+          }).catch((error) => {
+            if (error && error.name === "AbortError") {
+              showToast("ยกเลิกการบันทึกรูป");
+              return;
+            }
+            console.warn("Native image sharing is unavailable:", error);
+            downloadImageBlob(blob, fileName);
+            showToast("ดาวน์โหลดรูป PNG แล้ว");
+          });
+          return;
+        }
+      } catch (error) {
+        console.warn("Unable to open native image sharing:", error);
+      }
+
+      downloadImageBlob(blob, fileName);
+      showToast("ดาวน์โหลดรูป PNG แล้ว");
     }
 
     function buildSubmissionPayload(result) {
@@ -2160,6 +2690,11 @@
       state.answers = {};
       state.profile = { displayName: "", department: "" };
       state.result = null;
+      state.resultImageBlob = null;
+      state.resultImageFileName = "";
+      els.saveImageButton.disabled = true;
+      els.saveImageButton.removeAttribute("aria-busy");
+      els.saveImageLabel.textContent = "กำลังเตรียมรูป...";
       els.displayName.value = "";
       els.department.value = "";
       showScreen("intro");
