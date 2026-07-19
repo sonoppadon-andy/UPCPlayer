@@ -196,48 +196,6 @@
       letter-spacing: 0.05em;
     }
 
-
-    .language-switch {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.045);
-    }
-
-    .language-button {
-      min-width: 42px;
-      min-height: 32px;
-      padding: 5px 10px;
-      color: var(--muted);
-      border: 0;
-      border-radius: 999px;
-      background: transparent;
-      cursor: pointer;
-      font-size: 0.76rem;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      transition: color 180ms ease, background 180ms ease, transform 180ms ease;
-    }
-
-    .language-button:hover {
-      color: var(--text);
-    }
-
-    .language-button[aria-pressed="true"] {
-      color: #07111f;
-      background: linear-gradient(110deg, var(--primary), #9bf5dd);
-      box-shadow: 0 8px 20px rgba(85, 230, 193, 0.18);
-    }
-
-    .topbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
     .privacy-pill {
       display: inline-flex;
       align-items: center;
@@ -1255,21 +1213,6 @@
         letter-spacing: 0.035em;
       }
 
-      .topbar-actions {
-        gap: 6px;
-      }
-
-      .language-switch {
-        padding: 3px;
-      }
-
-      .language-button {
-        min-width: 37px;
-        min-height: 30px;
-        padding: 4px 8px;
-        font-size: 0.7rem;
-      }
-
       .privacy-pill {
         width: 34px;
         height: 34px;
@@ -1435,7 +1378,7 @@
   </style>
 </head>
 <body>
-  <a class="skip-link" id="skip-link" href="#main-content">ข้ามไปยังเนื้อหาหลัก</a>
+  <a class="skip-link" href="#main-content">ข้ามไปยังเนื้อหาหลัก</a>
   <div class="ambient ambient-one" aria-hidden="true"></div>
   <div class="ambient ambient-two" aria-hidden="true"></div>
 
@@ -1449,82 +1392,76 @@
             <span class="brand-subtitle">TEAM DISCOVERY EXPERIENCE</span>
           </div>
         </div>
-        <div class="topbar-actions">
-          <div class="language-switch" role="group" aria-label="Language">
-            <button class="language-button" id="lang-th" type="button" data-lang="th" aria-pressed="true">TH</button>
-            <button class="language-button" id="lang-en" type="button" data-lang="en" aria-pressed="false">EN</button>
-          </div>
-          <div class="privacy-pill" id="privacy-pill">ประมวลผลบนอุปกรณ์นี้</div>
-        </div>
+        <div class="privacy-pill" id="privacy-pill">ประมวลผลบนอุปกรณ์นี้</div>
       </header>
 
       <main id="main-content">
         <section class="screen" id="intro-screen" aria-labelledby="intro-title">
           <div class="hero-layout">
             <div>
-              <p class="eyebrow" id="intro-eyebrow">Unlock your team superpower</p>
+              <p class="eyebrow">Unlock your team superpower</p>
               <h1 class="hero-title" id="intro-title">
                 What kind of
                 <span>PLAYER are you?</span>
               </h1>
-              <p class="hero-lead" id="hero-lead">
+              <p class="hero-lead">
                 ทุกทีมมีผู้เล่นหลายแบบ มาถอดรหัสสไตล์การทำงานของคุณ
                 และค้นหาว่าคุณคือจิ๊กซอว์ชิ้นไหนที่ช่วยให้ทีมไปถึงเส้นชัย
               </p>
 
-              <div class="meta-row" id="meta-row" aria-label="รายละเอียดแบบประเมิน">
-                <span class="meta-chip"><strong>9</strong> <span id="meta-questions">คำถาม</span></span>
-                <span class="meta-chip"><strong>3</strong> <span id="meta-minutes">นาทีโดยประมาณ</span></span>
-                <span class="meta-chip" id="meta-no-wrong">ไม่มีคำตอบถูกหรือผิด</span>
+              <div class="meta-row" aria-label="รายละเอียดแบบประเมิน">
+                <span class="meta-chip"><strong>9</strong> คำถาม</span>
+                <span class="meta-chip"><strong>3</strong> นาทีโดยประมาณ</span>
+                <span class="meta-chip">ไม่มีคำตอบถูกหรือผิด</span>
               </div>
 
-              <div class="role-strip" id="role-strip" aria-label="รูปแบบผู้เล่นทั้งสี่">
+              <div class="role-strip" aria-label="รูปแบบผู้เล่นทั้งสี่">
                 <article class="mini-role">
                   <span class="mini-role-icon" aria-hidden="true">🟡</span>
                   <strong>PLAYMAKER</strong>
-                  <small id="mini-playmaker">เชื่อมคนและไอเดีย</small>
+                  <small>เชื่อมคนและไอเดีย</small>
                 </article>
                 <article class="mini-role">
                   <span class="mini-role-icon" aria-hidden="true">🔴</span>
                   <strong>STRIKER</strong>
-                  <small id="mini-striker">เร่งพลังให้เกิดผลลัพธ์</small>
+                  <small>เร่งพลังให้เกิดผลลัพธ์</small>
                 </article>
                 <article class="mini-role">
                   <span class="mini-role-icon" aria-hidden="true">🔵</span>
                   <strong>DEFENDER</strong>
-                  <small id="mini-defender">ดูแลคุณภาพและความเสี่ยง</small>
+                  <small>ดูแลคุณภาพและความเสี่ยง</small>
                 </article>
                 <article class="mini-role">
                   <span class="mini-role-icon" aria-hidden="true">🟣</span>
                   <strong>CAPTAIN</strong>
-                  <small id="mini-captain">พาทีมไปด้วยกัน</small>
+                  <small>พาทีมไปด้วยกัน</small>
                 </article>
               </div>
             </div>
 
             <form class="start-panel" id="start-form">
-              <p class="panel-kicker" id="panel-kicker">Ready for the mission?</p>
-              <h2 id="start-title">ใส่ข้อมูลเล็กน้อยก่อนเริ่ม</h2>
-              <p class="panel-copy" id="panel-copy">
+              <p class="panel-kicker">Ready for the mission?</p>
+              <h2>ใส่ข้อมูลเล็กน้อยก่อนเริ่ม</h2>
+              <p class="panel-copy">
                 ข้อมูลนี้ใช้แสดงบนหน้าผลลัพธ์เท่านั้น เว้นว่างได้หากต้องการทำแบบไม่ระบุตัวตน
               </p>
 
               <div class="field">
-                <label for="display-name" id="display-name-label">ชื่อเล่น <span>(ไม่บังคับ)</span></label>
+                <label for="display-name">ชื่อเล่น <span>(ไม่บังคับ)</span></label>
                 <input id="display-name" name="displayName" type="text" maxlength="50" autocomplete="name" placeholder="เช่น เมย์">
               </div>
 
               <div class="field">
-                <label for="department" id="department-label">ทีม / BU <span>(ไม่บังคับ)</span></label>
+                <label for="department">ทีม / BU <span>(ไม่บังคับ)</span></label>
                 <input id="department" name="department" type="text" maxlength="80" autocomplete="organization-title" placeholder="เช่น Digital Solutions">
               </div>
 
               <button class="btn btn-primary" id="start-button" type="submit">
-                <span id="start-button-label">เริ่มค้นหา PLAYER DNA</span>
+                เริ่มค้นหา PLAYER DNA
                 <span class="btn-icon" aria-hidden="true">→</span>
               </button>
 
-              <p class="fine-print" id="fine-print">
+              <p class="fine-print">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M12 3.5 5 6.6v5.2c0 4.4 2.8 7.5 7 8.7 4.2-1.2 7-4.3 7-8.7V6.6l-7-3.1Z" stroke="currentColor" stroke-width="1.6"/>
                   <path d="m9.2 12 1.8 1.8 3.9-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1559,9 +1496,9 @@
             <div class="quiz-actions">
               <button class="btn btn-ghost" id="back-button" type="button">
                 <span class="btn-icon" aria-hidden="true">←</span>
-                <span id="back-button-label">ย้อนกลับ</span>
+                ย้อนกลับ
               </button>
-              <span class="keyboard-hint" id="keyboard-hint">กด 1–4 เพื่อเลือกคำตอบ</span>
+              <span class="keyboard-hint">กด 1–4 เพื่อเลือกคำตอบ</span>
               <button class="btn btn-primary" id="next-button" type="button" disabled>
                 ถัดไป
                 <span class="btn-icon" aria-hidden="true">→</span>
@@ -1584,24 +1521,24 @@
 
             <div class="result-grid">
               <article class="result-card">
-                <h3 id="strength-heading">จุดแข็งที่ทีมสัมผัสได้</h3>
+                <h3>จุดแข็งที่ทีมสัมผัสได้</h3>
                 <ul class="strength-list" id="strength-list"></ul>
               </article>
 
               <article class="result-card score-card">
-                <h3 id="score-heading">PLAYER DNA ของคุณ</h3>
-                <p id="score-description">คะแนนสะท้อนแนวโน้มจากคำตอบทั้งหมด ไม่ได้ตีกรอบว่าคุณต้องเป็นเพียงบทบาทเดียว</p>
+                <h3>PLAYER DNA ของคุณ</h3>
+                <p>คะแนนสะท้อนแนวโน้มจากคำตอบทั้งหมด ไม่ได้ตีกรอบว่าคุณต้องเป็นเพียงบทบาทเดียว</p>
                 <div class="score-list" id="score-list"></div>
-                <p class="result-note" id="result-note">สัดส่วนคำนวณจากคะแนนรวมของแบบประเมิน และอาจไม่รวมกันเป็น 100% จากการปัดเศษ</p>
+                <p class="result-note">สัดส่วนคำนวณจากคะแนนรวมของแบบประเมิน และอาจไม่รวมกันเป็น 100% จากการปัดเศษ</p>
               </article>
 
               <article class="result-card">
-                <h3 id="impact-heading">พลังที่คุณเติมให้ทีม</h3>
+                <h3>พลังที่คุณเติมให้ทีม</h3>
                 <p id="team-impact"></p>
               </article>
 
               <article class="result-card">
-                <h3 id="growth-heading">ภารกิจอัปเลเวล</h3>
+                <h3>ภารกิจอัปเลเวล</h3>
                 <p id="growth-tip"></p>
               </article>
             </div>
@@ -1612,12 +1549,12 @@
                 <span id="save-image-label">กำลังเตรียมรูป...</span>
               </button>
               <button class="btn btn-ghost" id="restart-button" type="button">
-                <span id="restart-button-label">ทำแบบทดสอบใหม่</span>
+                ทำแบบทดสอบใหม่
               </button>
             </div>
 
-            <p class="save-image-hint" id="save-image-hint">บนมือถือ ให้เลือก “บันทึกรูปภาพ” จากเมนูแชร์เพื่อเก็บลงเครื่อง</p>
-            <p class="event-disclaimer" id="event-disclaimer">
+            <p class="save-image-hint">บนมือถือ ให้เลือก “บันทึกรูปภาพ” จากเมนูแชร์เพื่อเก็บลงเครื่อง</p>
+            <p class="event-disclaimer">
               ผลลัพธ์นี้เป็นภาพสะท้อนจากสถานการณ์จำลอง 9 ข้อ ควรใช้เป็นจุดเริ่มต้นของบทสนทนาและการทำความเข้าใจทีม
             </p>
           </div>
@@ -1629,8 +1566,8 @@
   <div class="analyzing" id="analyzing-overlay" role="status" aria-live="polite" hidden>
     <div class="analyzing-card">
       <div class="scanner" aria-hidden="true"></div>
-      <h2 id="analyzing-title">กำลังวิเคราะห์ PLAYER DNA</h2>
-      <p id="analyzing-copy">กำลังเชื่อมคำตอบของคุณเข้ากับพลังทั้ง 4 รูปแบบ...</p>
+      <h2>กำลังวิเคราะห์ PLAYER DNA</h2>
+      <p>กำลังเชื่อมคำตอบของคุณเข้ากับพลังทั้ง 4 รูปแบบ...</p>
     </div>
   </div>
 
@@ -1649,141 +1586,10 @@
       appName: "UPC 2026 PLAYER DNA",
       version: "2.1.0",
       submissionEndpoint: "",
-      storageKey: "upc2026-player-dna-session-v2",
-      languageKey: "upc2026-player-dna-language"
-    };
-
-
-    const I18N = {
-      th: {
-        htmlLang: "th",
-        ui: {
-          skipLink: "ข้ามไปยังเนื้อหาหลัก",
-          privacyLocal: "ประมวลผลบนอุปกรณ์นี้",
-          privacyConnected: "เชื่อมต่อระบบบันทึกผลแล้ว",
-          introEyebrow: "Unlock your team superpower",
-          heroLead: "ทุกทีมมีผู้เล่นหลายแบบ มาถอดรหัสสไตล์การทำงานของคุณ และค้นหาว่าคุณคือจิ๊กซอว์ชิ้นไหนที่ช่วยให้ทีมไปถึงเส้นชัย",
-          metaQuestions: "คำถาม",
-          metaMinutes: "นาทีโดยประมาณ",
-          metaNoWrong: "ไม่มีคำตอบถูกหรือผิด",
-          metaAria: "รายละเอียดแบบประเมิน",
-          roleAria: "รูปแบบผู้เล่นทั้งสี่",
-          miniPlaymaker: "เชื่อมคนและไอเดีย",
-          miniStriker: "เร่งพลังให้เกิดผลลัพธ์",
-          miniDefender: "ดูแลคุณภาพและความเสี่ยง",
-          miniCaptain: "พาทีมไปด้วยกัน",
-          panelKicker: "Ready for the mission?",
-          startTitle: "ใส่ข้อมูลเล็กน้อยก่อนเริ่ม",
-          panelCopy: "ข้อมูลนี้ใช้แสดงบนหน้าผลลัพธ์เท่านั้น เว้นว่างได้หากต้องการทำแบบไม่ระบุตัวตน",
-          displayNameLabel: 'ชื่อเล่น <span>(ไม่บังคับ)</span>',
-          displayNamePlaceholder: "เช่น เมย์",
-          departmentLabel: 'ทีม / BU <span>(ไม่บังคับ)</span>',
-          departmentPlaceholder: "เช่น Digital Solutions",
-          startButton: "เริ่มค้นหา PLAYER DNA",
-          finePrint: "แบบประเมินนี้ใช้เพื่อการเรียนรู้และการสร้างทีม ไม่ใช่เครื่องมือประเมินผลงานหรือวินิจฉัยบุคลิกภาพ",
-          questionCount: (current, total) => `คำถาม ${current} จาก ${total}`,
-          chooseAnswer: "เลือกคำตอบที่ใกล้กับตัวคุณที่สุดก่อนนะ",
-          back: "ย้อนกลับ",
-          next: "ถัดไป",
-          analyze: "วิเคราะห์ผลลัพธ์",
-          keyboardHint: "กด 1–4 เพื่อเลือกคำตอบ",
-          answerAria: (value, text) => `ตัวเลือก ${value}: ${text}`,
-          resultLabel: "YOUR PLAYER DNA REVEALED",
-          anonymous: "ผู้เล่นลับ",
-          secondary: role => `พลังรองของคุณ: ${role.toUpperCase()}`,
-          strengthHeading: "จุดแข็งที่ทีมสัมผัสได้",
-          scoreHeading: "PLAYER DNA ของคุณ",
-          scoreDescription: "คะแนนสะท้อนแนวโน้มจากคำตอบทั้งหมด ไม่ได้ตีกรอบว่าคุณต้องเป็นเพียงบทบาทเดียว",
-          resultNote: "สัดส่วนคำนวณจากคะแนนรวมของแบบประเมิน และอาจไม่รวมกันเป็น 100% จากการปัดเศษ",
-          impactHeading: "พลังที่คุณเติมให้ทีม",
-          growthHeading: "ภารกิจอัปเลเวล",
-          preparingImage: "กำลังเตรียมรูป...",
-          saveImage: "บันทึกรูปลงมือถือ",
-          retryImage: "ลองสร้างรูปอีกครั้ง",
-          restart: "ทำแบบทดสอบใหม่",
-          saveHint: "บนมือถือ ให้เลือก “บันทึกรูปภาพ” จากเมนูแชร์เพื่อเก็บลงเครื่อง",
-          disclaimer: "ผลลัพธ์นี้เป็นภาพสะท้อนจากสถานการณ์จำลอง 9 ข้อ ควรใช้เป็นจุดเริ่มต้นของบทสนทนาและการทำความเข้าใจทีม",
-          analyzingTitle: "กำลังวิเคราะห์ PLAYER DNA",
-          analyzingCopy: "กำลังเชื่อมคำตอบของคุณเข้ากับพลังทั้ง 4 รูปแบบ...",
-          preparingToast: "กำลังเตรียมรูป กรุณาแตะอีกครั้งเมื่อปุ่มพร้อม",
-          imageFailed: "ยังสร้างรูปไม่ได้ กรุณาลองอีกครั้ง",
-          shareDone: "ดำเนินการกับรูปเรียบร้อย",
-          shareCanceled: "ยกเลิกการบันทึกรูป",
-          downloaded: "ดาวน์โหลดรูป PNG แล้ว",
-          saved: "บันทึกผลเข้าสู่ระบบเรียบร้อย",
-          saveFailed: "แสดงผลสำเร็จ แต่ยังบันทึกเข้าระบบส่วนกลางไม่ได้",
-          shareText: role => `PLAYER DNA ของฉันคือ ${role.toUpperCase()}`,
-          imageScoreDescription: getUi().imageScoreDescription,
-          imageFooter: "ผลลัพธ์เพื่อการเรียนรู้และการทำความเข้าใจทีม"
-        }
-      },
-      en: {
-        htmlLang: "en",
-        ui: {
-          skipLink: "Skip to main content",
-          privacyLocal: "Processed on this device",
-          privacyConnected: "Results system connected",
-          introEyebrow: "Unlock your team superpower",
-          heroLead: "Every team needs different kinds of players. Decode your working style and discover how your unique strengths help the team reach the finish line.",
-          metaQuestions: "questions",
-          metaMinutes: "minutes approximately",
-          metaNoWrong: "No right or wrong answers",
-          metaAria: "Assessment details",
-          roleAria: "Four player styles",
-          miniPlaymaker: "Connects people and ideas",
-          miniStriker: "Turns energy into results",
-          miniDefender: "Protects quality and manages risk",
-          miniCaptain: "Moves the team forward together",
-          panelKicker: "Ready for the mission?",
-          startTitle: "A few details before you begin",
-          panelCopy: "This information is shown only on your result page. Leave it blank to complete the assessment anonymously.",
-          displayNameLabel: 'Nickname <span>(optional)</span>',
-          displayNamePlaceholder: "e.g. May",
-          departmentLabel: 'Team / BU <span>(optional)</span>',
-          departmentPlaceholder: "e.g. Digital Solutions",
-          startButton: "Discover my PLAYER DNA",
-          finePrint: "This assessment supports learning and team building. It is not a performance evaluation or personality diagnosis.",
-          questionCount: (current, total) => `Question ${current} of ${total}`,
-          chooseAnswer: "Please choose the answer that feels most like you.",
-          back: "Back",
-          next: "Next",
-          analyze: "Analyze result",
-          keyboardHint: "Press 1–4 to choose an answer",
-          answerAria: (value, text) => `Option ${value}: ${text}`,
-          resultLabel: "YOUR PLAYER DNA REVEALED",
-          anonymous: "Anonymous player",
-          secondary: role => `Your secondary strength: ${role.toUpperCase()}`,
-          strengthHeading: "Strengths your team can feel",
-          scoreHeading: "YOUR PLAYER DNA",
-          scoreDescription: "These scores reflect patterns across your answers. They do not limit you to a single role.",
-          resultNote: "Percentages are calculated from the total score and may not add up to exactly 100% due to rounding.",
-          impactHeading: "What you bring to the team",
-          growthHeading: "Your level-up mission",
-          preparingImage: "Preparing image...",
-          saveImage: "Save image to phone",
-          retryImage: "Try creating image again",
-          restart: "Take the assessment again",
-          saveHint: "On mobile, choose “Save Image” from the share menu to keep it on your device.",
-          disclaimer: "This result reflects nine simulated situations. Use it as a starting point for team conversations and mutual understanding.",
-          analyzingTitle: "Analyzing your PLAYER DNA",
-          analyzingCopy: "Connecting your answers with the four player strengths...",
-          preparingToast: "Preparing your image. Tap again when the button is ready.",
-          imageFailed: "The image could not be created. Please try again.",
-          shareDone: "Image action completed.",
-          shareCanceled: "Image saving canceled.",
-          downloaded: "PNG image downloaded.",
-          saved: "Result saved successfully.",
-          saveFailed: "Your result is ready, but it could not be saved to the central system.",
-          shareText: role => `My PLAYER DNA is ${role.toUpperCase()}`,
-          imageScoreDescription: "The scores reflect patterns across all answers, and you may have more than one player strength.",
-          imageFooter: "A result for learning and better team understanding"
-        }
-      }
+      storageKey: "upc2026-player-dna-session-v2"
     };
 
     const questions = [{"id":1,"prompt":"คุณเดินเข้ามา... รอบตัวมีแต่หน้าคุ้น ๆ แต่ยังไม่เคยได้ทำความรู้จักกันจริง ๆ ทุกคนกำลังเริ่มต้นทำความรู้จักกัน อะไรคือ 'ท่าไม้ตาย' ที่คุณหยิบมาใช้","options":[{"value":"A","text":"เข้าทักทายด้วยรอยยิ้ม สร้างความเป็นกันเองทันที"},{"value":"B","text":"หาอะไรทำด้วยกันก่อน...เดี๋ยวก็สนิทเอง"},{"value":"C","text":"ขอดูจังหวะก่อน...เดี๋ยวค่อยเข้าไปแจม"},{"value":"D","text":"ชวนทุกคนเริ่มพร้อมกัน...จะได้ไม่มีใครรู้สึกหลุดวง"}]},{"id":2,"prompt":"ทีมถูกสุ่มเรียบร้อยแล้ว สมาชิกทุกคนยังไม่ค่อยรู้จักกัน ถึงเวลาต้องทำภารกิจกับทีมใหม่ สิ่งแรกที่คุณจะทำคือ....","options":[{"value":"A","text":"ชวนทุกคนเข้าวงก่อน...จะได้ไม่มีใครนั่งเงียบ"},{"value":"B","text":"ขอฟังแต่ละคนก่อน...จะได้รู้ว่าใครถนัดอะไร"},{"value":"C","text":"งั้น...เริ่มแนะนำตัวกันก่อนดีไหม จะได้เรียกชื่อถูก"},{"value":"D","text":"หยิบโจทย์ขึ้นมาเลย...เดี๋ยวคุยไป ทำไป"}]},{"id":3,"prompt":"ทีมเริ่มภารกิจแรกแล้วได้เวลาขยับตัว คุณมักจะเริ่มแบบไหน...","options":[{"value":"A","text":"ขอเช็กให้พร้อมก่อน...จะได้ไม่ต้องย้อนกลับมาแก้"},{"value":"B","text":"เดี๋ยว...ลองคุยกันก่อน ใครมีไอเดียอะไรบ้าง"},{"value":"C","text":"พร้อมกันแล้ว...งั้นไปลุยกัน!"},{"value":"D","text":"ลุยก่อนเลย! ถ้าติด เดี๋ยวค่อยหาทาง"}]},{"id":4,"prompt":"ระหว่างภารกิจ คุณลองมองรอบตัวสักนิด คุณคิดว่าคุณได้รู้จักเพื่อน ๆ ทั่วทั้ง S มากน้อยแค่ไหนแล้ว","options":[{"value":"A","text":"มีร้อยคนก็รู้จักร้อยคนเลย เดินไปไหนก็มีคนทัก"},{"value":"B","text":"สักครึ่งหนึ่งได้ ไหมนะ? แต่ยังมีอีกหลายคนที่อยากรู้จัก"},{"value":"C","text":"รู้จักคนนั้น...รู้จักคนนี้...แต่ยังวนอยู่กลุ่มเดิมๆ"},{"value":"D","text":"เดินผ่านกันทุกวัน...แต่ยังแอบคิดว่า \"เอ...อยู่ BU ไหนนะ?\""}]},{"id":5,"prompt":"แผนที่วางไว้เริ่มไม่เป็นไปตามคาดเมื่อทีมเริ่มสะดุด สิ่งแรกที่คุณคิดคือ...","options":[{"value":"A","text":"โอเคๆ ...แก้ก่อน! ดราม่าไว้ทีหลัง"},{"value":"B","text":"ไม่มีอะไร...เดี๋ยวเราหาทางผ่านไปด้วยกัน"},{"value":"C","text":"ขอไล่ดูทีละจุด...น่าจะมีต้นเหตุอยู่สักตรง"},{"value":"D","text":"เดี๋ยวก่อน...ลองคุยกันก่อนว่าเกิดอะไรขึ้น"}]},{"id":6,"prompt":"เวลาเหลือน้อยกว่าที่คิด ในสภาวะที่ Deadline บีบคั้น... ตอนนี้ทุกนาทีมีค่า อะไรคือวิธีที่คุณเลือกใช้เพื่อให้งานจบสวยๆ....","options":[{"value":"A","text":"ใจเย็น...ขอจัดลำดับงานก่อน จะได้ไม่ต้องแก้ซ้ำ"},{"value":"B","text":"เดดไลน์ไม่รอแล้ว...ลุย!"},{"value":"C","text":"ฮึบอีกนิด...เดี๋ยวก็ถึงเส้นชัยด้วยกัน"},{"value":"D","text":"เดี๋ยว ๆ... ขอเช็กว่าเรายังไปทางเดียวกันอยู่ไหมนะ"}]},{"id":7,"prompt":"ภารกิจลับปรากฏขึ้น ไม่ได้อยู่ในแผน แต่เหมือนมีคะแนนพิเศษซ่อนอยู่... ใจของคุณสั่งว่า...","options":[{"value":"A","text":"ไปสิ...จะได้ไม่มีใครตกขบวน"},{"value":"B","text":"ชวนเพื่อนไปด้วยดีกว่า... เผื่อได้เพื่อนใหม่เพิ่มอีก"},{"value":"C","text":"เอาสิ! ไม่ลองก็ไม่รู้ จัดมา!"},{"value":"D","text":"ขอดูเงื่อนไขแป๊บ...เดี๋ยวพลาดของรางวัล"}]},{"id":8,"prompt":"เพื่อนร่วมทีมคนหนึ่งเริ่มล้า...อีกนิดเดียวจะบรรลุภารกิจแล้ว คุณจะเติมพลังให้ทีม...","options":[{"value":"A","text":"เดี๋ยวลองเข้าไปคุย...บางทีแค่มีคนฟังก็ช่วยได้"},{"value":"B","text":"เดี๋ยวถามก่อน...ติดตรงไหนหรือเปล่า"},{"value":"C","text":"ไม่รีบนะ...เราไปด้วยกัน"},{"value":"D","text":"มา...เดี๋ยวช่วยเอง จะได้ไปต่อ!"}]},{"id":9,"prompt":"ทีมเดินทางมาถึงเส้นชัยเมื่อมองย้อนกลับไป คุณแอบหวังว่าเพื่อนจะพูดถึงคุณว่า...","options":[{"value":"A","text":"ดีใจนะ...ที่เราเดินมาถึงตรงนี้ด้วยกัน"},{"value":"B","text":"ดีนะ... เขาทำให้เรารู้จักกันมากขึ้น"},{"value":"C","text":"ถ้าไม่มีเขา...งานคงไม่เดินเร็วขนาดนี้"},{"value":"D","text":"โชคดีที่มีเขา...หลายอย่างเลยราบรื่น"}]}];
-
-    const questionsEn = [{"id":1,"prompt":"What is your go-to move when you enter a room full of familiar faces you have not really gotten to know yet?","options":[{"value":"A","text":"Walk over with a smile and create a friendly atmosphere right away"},{"value":"B","text":"Find something to do together first; the connection will follow"},{"value":"C","text":"Observe the rhythm first, then join when the timing feels right"},{"value":"D","text":"Invite everyone to begin together so no one feels left out"}]},{"id":2,"prompt":"Your new team has just been assigned, and most members do not know one another. What do you do first?","options":[{"value":"A","text":"Bring everyone into the conversation so no one stays silent"},{"value":"B","text":"Listen to each person first to understand their strengths"},{"value":"C","text":"Suggest introductions first so everyone knows one another's names"},{"value":"D","text":"Pick up the task and start; we can talk while doing"}]},{"id":3,"prompt":"The team's first mission begins. How do you usually get moving?","options":[{"value":"A","text":"Check that everything is ready so we do not have to redo it later"},{"value":"B","text":"Talk first and ask what ideas everyone has"},{"value":"C","text":"Once everyone is ready, let's go together"},{"value":"D","text":"Start now; if we get stuck, we will find a way"}]},{"id":4,"prompt":"During the mission, you look around. How many colleagues across S do you feel you already know?","options":[{"value":"A","text":"I know nearly everyone; wherever I go, someone says hello"},{"value":"B","text":"Maybe about half, and there are still many people I want to know"},{"value":"C","text":"I know people here and there, but mostly within the same groups"},{"value":"D","text":"We pass each other every day, but I still wonder which BU they are in"}]},{"id":5,"prompt":"The plan starts to go off track and the team hits a roadblock. What is your first thought?","options":[{"value":"A","text":"Fix it first; we can discuss the drama later"},{"value":"B","text":"It is okay; we will find a way through together"},{"value":"C","text":"Trace it point by point; there must be a root cause somewhere"},{"value":"D","text":"Pause and talk about what happened first"}]},{"id":6,"prompt":"Time is running out and every minute matters. How do you help the team finish well?","options":[{"value":"A","text":"Stay calm and prioritize the work so we do not create rework"},{"value":"B","text":"The deadline will not wait. Let's move"},{"value":"C","text":"One more push; we will reach the finish line together"},{"value":"D","text":"Pause briefly and check that we are still moving in the same direction"}]},{"id":7,"prompt":"A secret mission appears. It was not in the plan, but bonus points may be hidden there. What does your instinct say?","options":[{"value":"A","text":"Let's go, and make sure no one is left behind"},{"value":"B","text":"Invite someone along; maybe we will make a new connection"},{"value":"C","text":"Absolutely. We will never know unless we try"},{"value":"D","text":"Check the conditions first so we do not miss the reward"}]},{"id":8,"prompt":"One teammate is running out of energy, and the finish line is close. How do you recharge the team?","options":[{"value":"A","text":"Talk with them; sometimes having someone listen is enough"},{"value":"B","text":"Ask what is blocking them or where they need help"},{"value":"C","text":"No rush; we will move forward together"},{"value":"D","text":"Come on, I will help so we can keep going"}]},{"id":9,"prompt":"The team reaches the finish line. Looking back, what do you hope your teammates say about you?","options":[{"value":"A","text":"I am glad we reached this point together"},{"value":"B","text":"They helped us get to know one another better"},{"value":"C","text":"Without them, the work would not have moved this fast"},{"value":"D","text":"Luckily they were there; many things went smoothly"}]}];
 
     const scoringMap = {
       1: { weight: 1, A: "Playmaker", B: "Striker", C: "Defender", D: "Captain" },
@@ -1869,28 +1675,6 @@
       { code: "REFLECT", mission: "MISSION 09 · THE FINISH LINE" }
     ];
 
-
-    const roleProfilesEn = {"Playmaker":{"icon":"🟡","thai":"The Connector","tagline":"You help different people understand one another and turn the atmosphere into forward movement.","strengths":["Connect people, information, and scattered ideas into one shared picture","Create a safe space where people feel comfortable sharing ideas","Spot opportunities for collaboration before others notice them"],"impact":"With you on the team, conversations flow more easily, new people join in faster, and good ideas are more likely to grow into something bigger.","growth":"After connecting everyone, close the conversation with a clear owner, next step, and timeline. This turns your connecting power into visible results."},"Striker":{"icon":"🔴","thai":"The Driver","tagline":"You turn “we should” into “we started” and create momentum for the team.","strengths":["Make decisions and take action well when time is limited","Move the team out of hesitation and closer to the goal","Find direct, practical routes that keep work moving"],"impact":"You bring speed, courage, and the feeling that the goal is closer than it seems. The team often relies on you when it is time to accelerate or break through a blockage.","growth":"Before going full speed, pause briefly to confirm the goal, boundaries, and team input. A few minutes of alignment can keep your speed on the right track."},"Defender":{"icon":"🔵","thai":"The Standard Keeper","tagline":"You help the team reach the finish line with care, quality, and confidence.","strengths":["Notice details, risks, and gaps that others may overlook","Organize and sequence work to prevent repeated rework","Protect quality and continuity even under pressure"],"impact":"You provide the stable foundation the team can trust. People feel reassured when you check direction, readiness, and potential issues before they happen.","growth":"Decide which areas must be perfect and which are good enough to move forward. Choosing the most important checkpoints keeps your thoroughness from becoming a bottleneck."},"Captain":{"icon":"🟣","thai":"The Team Captain","tagline":"You keep both the goal and the people in view, so the team knows where it is going and no one walks alone.","strengths":["Build shared direction and invite everyone to contribute","Read the team's energy and sustain morale through difficult moments","Turn differences into a coordinated team rhythm"],"impact":"With you, the team sees the bigger picture, feels included, and takes shared ownership of the goal. You help turn a group of people into a team.","growth":"Practice sharing decision space and assigning clear ownership. You do not need to carry everything yourself; distributed leadership makes the whole team stronger."}};
-    const stageLabelsEn = [{"code":"CONNECT","mission":"MISSION 01 · FIRST CONTACT"},{"code":"CONNECT","mission":"MISSION 02 · NEW TEAM"},{"code":"ACT","mission":"MISSION 03 · FIRST MOVE"},{"code":"DISCOVER","mission":"MISSION 04 · NETWORK"},{"code":"ADAPT","mission":"MISSION 05 · RECOVERY"},{"code":"DELIVER","mission":"MISSION 06 · DEADLINE"},{"code":"EXPLORE","mission":"MISSION 07 · BONUS QUEST"},{"code":"SUPPORT","mission":"MISSION 08 · TEAM ENERGY"},{"code":"REFLECT","mission":"MISSION 09 · THE FINISH LINE"}];
-
-    let currentLanguage = localStorage.getItem(APP_CONFIG.languageKey) === "en" ? "en" : "th";
-
-    function getUi() {
-      return I18N[currentLanguage].ui;
-    }
-
-    function getQuestions() {
-      return currentLanguage === "en" ? questionsEn : questions;
-    }
-
-    function getRoleProfiles() {
-      return currentLanguage === "en" ? roleProfilesEn : roleProfiles;
-    }
-
-    function getStageLabels() {
-      return currentLanguage === "en" ? stageLabelsEn : stageLabels;
-    }
-
     const state = {
       currentIndex: 0,
       answers: {},
@@ -1932,88 +1716,16 @@
       scoreList: document.getElementById("score-list"),
       saveImageButton: document.getElementById("save-image-button"),
       saveImageLabel: document.getElementById("save-image-label"),
-      restartButton: document.getElementById("restart-button"),
-      langTh: document.getElementById("lang-th"),
-      langEn: document.getElementById("lang-en")
+      restartButton: document.getElementById("restart-button")
     };
 
     let toastTimer = null;
 
-    function setText(id, value) {
-      const element = document.getElementById(id);
-      if (element) {
-        element.textContent = value;
-      }
-    }
-
-    function applyLanguage() {
-      const ui = getUi();
-      document.documentElement.lang = I18N[currentLanguage].htmlLang;
-      els.langTh.setAttribute("aria-pressed", String(currentLanguage === "th"));
-      els.langEn.setAttribute("aria-pressed", String(currentLanguage === "en"));
-
-      setText("skip-link", ui.skipLink);
-      setText("intro-eyebrow", ui.introEyebrow);
-      setText("hero-lead", ui.heroLead);
-      setText("meta-questions", ui.metaQuestions);
-      setText("meta-minutes", ui.metaMinutes);
-      setText("meta-no-wrong", ui.metaNoWrong);
-      document.getElementById("meta-row")?.setAttribute("aria-label", ui.metaAria);
-      document.getElementById("role-strip")?.setAttribute("aria-label", ui.roleAria);
-      setText("mini-playmaker", ui.miniPlaymaker);
-      setText("mini-striker", ui.miniStriker);
-      setText("mini-defender", ui.miniDefender);
-      setText("mini-captain", ui.miniCaptain);
-      setText("panel-kicker", ui.panelKicker);
-      setText("start-title", ui.startTitle);
-      setText("panel-copy", ui.panelCopy);
-      document.getElementById("display-name-label").innerHTML = ui.displayNameLabel;
-      document.getElementById("department-label").innerHTML = ui.departmentLabel;
-      els.displayName.placeholder = ui.displayNamePlaceholder;
-      els.department.placeholder = ui.departmentPlaceholder;
-      setText("start-button-label", ui.startButton);
-      setText("fine-print", ui.finePrint);
-      setText("back-button-label", ui.back);
-      setText("keyboard-hint", ui.keyboardHint);
-      setText("strength-heading", ui.strengthHeading);
-      setText("score-heading", ui.scoreHeading);
-      setText("score-description", ui.scoreDescription);
-      setText("result-note", ui.resultNote);
-      setText("impact-heading", ui.impactHeading);
-      setText("growth-heading", ui.growthHeading);
-      setText("restart-button-label", ui.restart);
-      setText("save-image-hint", ui.saveHint);
-      setText("event-disclaimer", ui.disclaimer);
-      setText("analyzing-title", ui.analyzingTitle);
-      setText("analyzing-copy", ui.analyzingCopy);
-
-      els.privacyPill.textContent = APP_CONFIG.submissionEndpoint
-        ? ui.privacyConnected
-        : ui.privacyLocal;
-
-      if (!els.quizScreen.hidden) {
-        renderQuestion();
-      }
-
-      if (!els.resultScreen.hidden && state.result) {
-        renderResult(state.result);
-      }
-
-      if (!state.resultImageBlob) {
-        els.saveImageLabel.textContent = ui.preparingImage;
-      }
-    }
-
-    function changeLanguage(language) {
-      if (!["th", "en"].includes(language) || language === currentLanguage) {
-        return;
-      }
-      currentLanguage = language;
-      localStorage.setItem(APP_CONFIG.languageKey, currentLanguage);
-      applyLanguage();
-    }
-
     function init() {
+      els.privacyPill.textContent = APP_CONFIG.submissionEndpoint
+        ? "เชื่อมต่อระบบบันทึกผลแล้ว"
+        : "ประมวลผลบนอุปกรณ์นี้";
+
       restoreSession();
       els.displayName.value = state.profile.displayName;
       els.department.value = state.profile.department;
@@ -2023,12 +1735,9 @@
       els.nextButton.addEventListener("click", goNext);
       els.saveImageButton.addEventListener("click", saveResultImage);
       els.restartButton.addEventListener("click", restartQuiz);
-      els.langTh.addEventListener("click", () => changeLanguage("th"));
-      els.langEn.addEventListener("click", () => changeLanguage("en"));
       document.addEventListener("keydown", handleKeyboard);
 
       window.addEventListener("beforeunload", saveSession);
-      applyLanguage();
     }
 
     function startQuiz(event) {
@@ -2059,21 +1768,20 @@
     }
 
     function renderQuestion() {
-      const activeQuestions = getQuestions();
-      const question = activeQuestions[state.currentIndex];
-      const progress = Math.round(((state.currentIndex + 1) / activeQuestions.length) * 100);
+      const question = questions[state.currentIndex];
+      const progress = Math.round(((state.currentIndex + 1) / questions.length) * 100);
       const selectedValue = state.answers[question.id] || "";
 
-      els.questionCount.textContent = getUi().questionCount(state.currentIndex + 1, activeQuestions.length);
-      els.stageLabel.textContent = getStageLabels()[state.currentIndex].mission;
-      els.questionStage.textContent = getStageLabels()[state.currentIndex].code;
+      els.questionCount.textContent = `คำถาม ${state.currentIndex + 1} จาก ${questions.length}`;
+      els.stageLabel.textContent = stageLabels[state.currentIndex].mission;
+      els.questionStage.textContent = stageLabels[state.currentIndex].code;
       els.questionHeading.textContent = question.prompt;
       els.progressPercent.textContent = `${progress}%`;
       els.progressFill.style.width = `${progress}%`;
       els.nextButton.disabled = !selectedValue;
-      els.nextButton.innerHTML = state.currentIndex === activeQuestions.length - 1
-        ? `${getUi().analyze} <span class="btn-icon" aria-hidden="true">✦</span>`
-        : `${getUi().next} <span class="btn-icon" aria-hidden="true">→</span>`;
+      els.nextButton.innerHTML = state.currentIndex === questions.length - 1
+        ? 'วิเคราะห์ผลลัพธ์ <span class="btn-icon" aria-hidden="true">✦</span>'
+        : 'ถัดไป <span class="btn-icon" aria-hidden="true">→</span>';
 
       els.answerList.innerHTML = "";
 
@@ -2086,7 +1794,7 @@
         input.name = `q${question.id}`;
         input.value = option.value;
         input.checked = selectedValue === option.value;
-        input.setAttribute("aria-label", getUi().answerAria(option.value, option.text));
+        input.setAttribute("aria-label", `ตัวเลือก ${option.value}: ${option.text}`);
 
         const content = document.createElement("span");
         content.className = "option-content";
@@ -2138,18 +1846,17 @@
     }
 
     function goNext() {
-      const activeQuestions = getQuestions();
-      const question = activeQuestions[state.currentIndex];
+      const question = questions[state.currentIndex];
 
       if (!state.answers[question.id]) {
         els.questionPanel.classList.remove("shake");
         void els.questionPanel.offsetWidth;
         els.questionPanel.classList.add("shake");
-        showToast(getUi().chooseAnswer);
+        showToast("เลือกคำตอบที่ใกล้กับตัวคุณที่สุดก่อนนะ");
         return;
       }
 
-      if (state.currentIndex < activeQuestions.length - 1) {
+      if (state.currentIndex < questions.length - 1) {
         state.currentIndex += 1;
         saveSession();
         renderQuestion();
@@ -2253,9 +1960,9 @@
     }
 
     function renderResult(result) {
-      const profile = getRoleProfiles()[result.finalRole];
+      const profile = roleProfiles[result.finalRole];
       const displayLabel = [
-        state.profile.displayName || getUi().anonymous,
+        state.profile.displayName || "ผู้เล่นลับ",
         state.profile.department
       ].filter(Boolean).join(" · ");
 
@@ -2266,7 +1973,7 @@
       els.roleName.setAttribute("tabindex", "-1");
       els.roleThai.textContent = profile.thai;
       els.roleTagline.textContent = profile.tagline;
-      els.secondaryBadge.textContent = getUi().secondary(result.secondaryRole);
+      els.secondaryBadge.textContent = `พลังรองของคุณ: ${result.secondaryRole.toUpperCase()}`;
       els.teamImpact.textContent = profile.impact;
       els.growthTip.textContent = profile.growth;
 
@@ -2539,10 +2246,10 @@
       canvas.height = height;
       const context = canvas.getContext("2d");
       const result = state.result;
-      const profile = getRoleProfiles()[result.finalRole];
+      const profile = roleProfiles[result.finalRole];
       const palette = imagePalettes[result.finalRole];
       const displayLabel = [
-        state.profile.displayName || getUi().anonymous,
+        state.profile.displayName || "ผู้เล่นลับ",
         state.profile.department
       ].filter(Boolean).join(" · ");
 
@@ -2689,7 +2396,7 @@
         maxLines: 2
       });
 
-      const secondaryText = getUi().secondary(result.secondaryRole);
+      const secondaryText = `พลังรองของคุณ: ${result.secondaryRole.toUpperCase()}`;
       context.save();
       context.font = '700 21px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
       const secondaryWidth = Math.min(context.measureText(secondaryText).width + 58, 620);
@@ -2719,7 +2426,7 @@
         "rgba(255, 255, 255, 0.045)",
         "rgba(255, 255, 255, 0.10)"
       );
-      drawSectionHeading(context, getUi().strengthHeading, 100, 816, palette.start);
+      drawSectionHeading(context, "จุดแข็งที่ทีมสัมผัสได้", 100, 816, palette.start);
 
       let strengthY = 872;
       profile.strengths.forEach((strength) => {
@@ -2753,7 +2460,7 @@
         "rgba(255, 255, 255, 0.045)",
         "rgba(255, 255, 255, 0.10)"
       );
-      drawSectionHeading(context, getUi().scoreHeading, 100, 1156, palette.start);
+      drawSectionHeading(context, "PLAYER DNA ของคุณ", 100, 1156, palette.start);
       drawWrappedText(context, "คะแนนสะท้อนแนวโน้มจากคำตอบทั้งหมด และคุณอาจมีพลังมากกว่าหนึ่งรูปแบบ", 100, 1205, 850, {
         font: '400 22px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
         color: "#93A5BB",
@@ -2797,7 +2504,7 @@
         "rgba(255, 255, 255, 0.045)",
         "rgba(255, 255, 255, 0.10)"
       );
-      drawSectionHeading(context, getUi().impactHeading, 96, 1527, palette.start);
+      drawSectionHeading(context, "พลังที่คุณเติมให้ทีม", 96, 1527, palette.start);
       drawWrappedText(context, profile.impact, 96, 1580, 396, {
         font: '500 23px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
         color: "#C4D0DF",
@@ -2815,7 +2522,7 @@
         "rgba(255, 255, 255, 0.045)",
         "rgba(255, 255, 255, 0.10)"
       );
-      drawSectionHeading(context, getUi().growthHeading, 588, 1527, palette.end);
+      drawSectionHeading(context, "ภารกิจอัปเลเวล", 588, 1527, palette.end);
       drawWrappedText(context, profile.growth, 588, 1580, 396, {
         font: '500 23px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
         color: "#C4D0DF",
@@ -2832,7 +2539,7 @@
       context.fillStyle = "#8294AA";
       context.font = '500 18px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
       context.textAlign = "left";
-      context.fillText(getUi().imageFooter, 64, 1866);
+      context.fillText("ผลลัพธ์เพื่อการเรียนรู้และการทำความเข้าใจทีม", 64, 1866);
       context.textAlign = "right";
       context.fillText("UPC 2026", 1016, 1866);
       context.restore();
@@ -2883,7 +2590,7 @@
       state.resultImageFileName = makeResultFileName();
       els.saveImageButton.disabled = true;
       els.saveImageButton.setAttribute("aria-busy", "true");
-      els.saveImageLabel.textContent = getUi().preparingImage;
+      els.saveImageLabel.textContent = "กำลังเตรียมรูป...";
 
       try {
         if (document.fonts && document.fonts.ready) {
@@ -2900,13 +2607,13 @@
         state.resultImageBlob = blob;
         els.saveImageButton.disabled = false;
         els.saveImageButton.removeAttribute("aria-busy");
-        els.saveImageLabel.textContent = getUi().saveImage;
+        els.saveImageLabel.textContent = "บันทึกรูปลงมือถือ";
       } catch (error) {
         console.error("Unable to prepare result image:", error);
         els.saveImageButton.disabled = false;
         els.saveImageButton.removeAttribute("aria-busy");
-        els.saveImageLabel.textContent = getUi().retryImage;
-        showToast(getUi().imageFailed);
+        els.saveImageLabel.textContent = "ลองสร้างรูปอีกครั้ง";
+        showToast("ยังสร้างรูปไม่ได้ กรุณาลองอีกครั้ง");
       }
     }
 
@@ -2917,7 +2624,7 @@
 
       if (!state.resultImageBlob) {
         prepareResultImage();
-        showToast(getUi().preparingToast);
+        showToast("กำลังเตรียมรูป กรุณาแตะอีกครั้งเมื่อปุ่มพร้อม");
         return;
       }
 
@@ -2929,20 +2636,20 @@
         const shareData = {
           files: [file],
           title: "UPC 2026 · PLAYER DNA",
-          text: getUi().shareText(state.result.finalRole)
+          text: `PLAYER DNA ของฉันคือ ${state.result.finalRole.toUpperCase()}`
         };
 
         if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
           navigator.share(shareData).then(() => {
-            showToast(getUi().shareDone);
+            showToast("ดำเนินการกับรูปเรียบร้อย");
           }).catch((error) => {
             if (error && error.name === "AbortError") {
-              showToast(getUi().shareCanceled);
+              showToast("ยกเลิกการบันทึกรูป");
               return;
             }
             console.warn("Native image sharing is unavailable:", error);
             downloadImageBlob(blob, fileName);
-            showToast(getUi().downloaded);
+            showToast("ดาวน์โหลดรูป PNG แล้ว");
           });
           return;
         }
@@ -2951,7 +2658,7 @@
       }
 
       downloadImageBlob(blob, fileName);
-      showToast(getUi().downloaded);
+      showToast("ดาวน์โหลดรูป PNG แล้ว");
     }
 
     function buildSubmissionPayload(result) {
@@ -2984,10 +2691,10 @@
           throw new Error(`HTTP ${response.status}`);
         }
 
-        showToast(getUi().saved);
+        showToast("บันทึกผลเข้าสู่ระบบเรียบร้อย");
       } catch (error) {
         console.error("Unable to submit result:", error);
-        showToast(getUi().saveFailed);
+        showToast("แสดงผลสำเร็จ แต่ยังบันทึกเข้าระบบส่วนกลางไม่ได้");
       }
     }
 
@@ -3071,7 +2778,7 @@
       state.resultImageFileName = "";
       els.saveImageButton.disabled = true;
       els.saveImageButton.removeAttribute("aria-busy");
-      els.saveImageLabel.textContent = getUi().preparingImage;
+      els.saveImageLabel.textContent = "กำลังเตรียมรูป...";
       els.displayName.value = "";
       els.department.value = "";
       showScreen("intro");
