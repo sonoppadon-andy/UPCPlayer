@@ -1388,7 +1388,7 @@
         <div class="brand" aria-label="UPC 2026 PLAYER DNA">
           <div class="brand-mark" aria-hidden="true">▶</div>
           <div class="brand-copy">
-            <span class="brand-title">UPC 2026 · PLAYER DNA</span>
+            <span class="brand-title">UPC 2026 · PLAYER DNA [R0.1]</span>
             <span class="brand-subtitle">TEAM DISCOVERY EXPERIENCE</span>
           </div>
         </div>
@@ -2056,7 +2056,8 @@
       }
       return pieces;
     }
-
+    
+     /*  
     function wrapCanvasText(context, text, maxWidth) {
       const source = String(text || "").trim();
       if (!source) {
@@ -2094,8 +2095,79 @@
         lines.push(line.trim());
       }
       return lines;
+    } */
+    
+/* raplace wrapCanvasText */
+    function wrapCanvasText(context, text, maxWidth) {
+  const source = String(text || "").trim();
+
+  if (!source) {
+    return [];
+  }
+
+  /*
+    ใช้ Array.from เพื่อแยกข้อความเป็น Unicode characters
+    วิธีนี้ทำงานสม่ำเสมอกว่า Intl.Segmenter บนมือถือ
+  */
+  const characters = Array.from(source);
+  const lines = [];
+
+  let currentLine = "";
+  let lastBreakIndex = -1;
+
+  for (let index = 0; index < characters.length; index += 1) {
+    const character = characters[index];
+    const candidate = currentLine + character;
+
+    // จำตำแหน่งที่เหมาะกับการขึ้นบรรทัดใหม่
+    if (
+      character === " " ||
+      character === "\u200B" ||
+      character === "-" ||
+      character === "–" ||
+      character === "—"
+    ) {
+      lastBreakIndex = currentLine.length;
     }
 
+    if (currentLine && context.measureText(candidate).width > maxWidth) {
+      /*
+        หากมีช่องว่างในบรรทัด ให้ตัดตรงช่องว่างก่อน
+        เพื่อไม่ให้คำภาษาอังกฤษหรือประโยคดูขาดเกินไป
+      */
+      if (lastBreakIndex >= 0) {
+        const combined = currentLine + character;
+        const firstPart = combined.slice(0, lastBreakIndex + 1).trim();
+        const remainingPart = combined.slice(lastBreakIndex + 1).trimStart();
+
+        if (firstPart) {
+          lines.push(firstPart);
+        }
+
+        currentLine = remainingPart;
+      } else {
+        /*
+          ภาษาไทยไม่มีช่องว่างระหว่างทุกคำ
+          จึงตัดตามความกว้างจริงของ Canvas
+        */
+        lines.push(currentLine.trim());
+        currentLine = character.trimStart();
+      }
+
+      lastBreakIndex = -1;
+    } else {
+      currentLine = candidate;
+    }
+  }
+
+  if (currentLine.trim()) {
+    lines.push(currentLine.trim());
+  }
+
+  return lines;
+}
+    /* end replace */
+    
     function drawWrappedText(context, text, x, y, maxWidth, options = {}) {
       const {
         font = '400 26px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
@@ -2112,6 +2184,16 @@
       context.textBaseline = "top";
 
       let lines = wrapCanvasText(context, text, maxWidth);
+
+// ป้องกันข้อความล้นบน Mobile Browser
+  lines = lines.flatMap((line) => {
+    if (context.measureText(line).width <= maxWidth) {
+      return [line];
+    }
+
+    return splitLongToken(context, line, maxWidth);
+  });
+      
       if (lines.length > maxLines) {
         lines = lines.slice(0, maxLines);
         let finalLine = lines[maxLines - 1];
