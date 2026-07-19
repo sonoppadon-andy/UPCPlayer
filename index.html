@@ -2306,12 +2306,12 @@
         maxLines: 1
       });
 
-      drawWrappedText(context, profile.tagline, 540, 585, 810, {
+      drawWrappedText(context, profile.tagline, 540, 585, 650, {
         font: '500 27px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
         color: "#BBC8D9",
-        lineHeight: 40,
+        lineHeight: 38,
         align: "center",
-        maxLines: 2
+        maxLines: 3
       });
 
       const secondaryText = `พลังรองของคุณ: ${result.secondaryRole.toUpperCase()}`;
@@ -2321,7 +2321,7 @@
       fillRoundedRect(
         context,
         540 - (secondaryWidth / 2),
-        680,
+        710,
         secondaryWidth,
         46,
         23,
@@ -2331,7 +2331,7 @@
       context.fillStyle = "#D7E0ED";
       context.textAlign = "center";
       context.textBaseline = "top";
-      context.fillText(secondaryText, 540, 691);
+      context.fillText(secondaryText, 540, 721);
       context.restore();
 
       fillRoundedRect(
