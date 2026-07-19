@@ -2305,15 +2305,19 @@
         align: "center",
         maxLines: 1
       });
-
+      context.save();
+      context.beginPath();
+      context.rect(180, 570, 720, 125);
+      context.clip();
       drawWrappedText(context, profile.tagline, 540, 585, 650, {
         font: '500 27px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
         color: "#BBC8D9",
         lineHeight: 38,
         align: "center",
-        maxLines: 3
+        maxLines: 2
       });
-
+      context.restore();
+      
       const secondaryText = `พลังรองของคุณ: ${result.secondaryRole.toUpperCase()}`;
       context.save();
       context.font = '700 21px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
@@ -2321,7 +2325,7 @@
       fillRoundedRect(
         context,
         540 - (secondaryWidth / 2),
-        710,
+        690,
         secondaryWidth,
         46,
         23,
