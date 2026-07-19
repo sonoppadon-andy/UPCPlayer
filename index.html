@@ -1388,7 +1388,7 @@
         <div class="brand" aria-label="UPC 2026 PLAYER DNA">
           <div class="brand-mark" aria-hidden="true">▶</div>
           <div class="brand-copy">
-            <span class="brand-title">UPC 2026 · PLAYER DNA [V1]</span>
+            <span class="brand-title">UPC 2026 · PLAYER DNA</span>
             <span class="brand-subtitle">TEAM DISCOVERY EXPERIENCE</span>
           </div>
         </div>
@@ -2305,19 +2305,15 @@
         align: "center",
         maxLines: 1
       });
-      context.save();
-      context.beginPath();
-      context.rect(180, 570, 720, 125);
-      context.clip();
-      drawWrappedText(context, profile.tagline, 540, 585, 650, {
+
+      drawWrappedText(context, profile.tagline, 540, 585, 810, {
         font: '500 27px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
         color: "#BBC8D9",
-        lineHeight: 38,
+        lineHeight: 40,
         align: "center",
         maxLines: 2
       });
-      context.restore();
-      
+
       const secondaryText = `พลังรองของคุณ: ${result.secondaryRole.toUpperCase()}`;
       context.save();
       context.font = '700 21px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif';
@@ -2325,7 +2321,7 @@
       fillRoundedRect(
         context,
         540 - (secondaryWidth / 2),
-        690,
+        680,
         secondaryWidth,
         46,
         23,
@@ -2335,7 +2331,7 @@
       context.fillStyle = "#D7E0ED";
       context.textAlign = "center";
       context.textBaseline = "top";
-      context.fillText(secondaryText, 540, 721);
+      context.fillText(secondaryText, 540, 691);
       context.restore();
 
       fillRoundedRect(
