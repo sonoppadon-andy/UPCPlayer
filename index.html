@@ -2388,11 +2388,11 @@
         maxLines: 1
       });
 
-      drawWrappedText(context, profile.tagline, 540, 585, 810, {
+      drawWrappedText(context, profile.tagline, 170, 585, 810, {
         font: '500 27px "Noto Sans Thai", "Leelawadee UI", Tahoma, sans-serif',
         color: "#BBC8D9",
         lineHeight: 40,
-        align: "center",
+        align: "left",
         maxLines: 2
       });
 
@@ -2411,9 +2411,9 @@
         "rgba(255, 255, 255, 0.12)"
       );
       context.fillStyle = "#D7E0ED";
-      context.textAlign = "center";
+      context.textAlign = "left";
       context.textBaseline = "top";
-      context.fillText(secondaryText, 540, 691);
+      context.fillText(secondaryText, 500, 691);
       context.restore();
 
       fillRoundedRect(
